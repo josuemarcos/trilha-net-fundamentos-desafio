@@ -17,13 +17,17 @@ namespace DesafioFundamentos.Models
             // Implementado!!!!!
             Console.WriteLine("Digite a placa do veículo para estacionar:");
             string veiculo = Console.ReadLine();
-            if (veiculo.Length > 0)
+            if (veiculo.Length == 0)
             {
-                veiculos.Add(veiculo);
+                Console.WriteLine("A placa não pode ser vazia!");
+            }
+            else if (VeiculoEstaEstacionado(veiculo, veiculos))
+            {
+                Console.WriteLine($"O veículo {veiculo} já está estacionado aqui!");
             }
             else
             {
-                Console.WriteLine("A placa não pode ser vazia!");
+                veiculos.Add(veiculo);
             }
         }
 
@@ -34,7 +38,7 @@ namespace DesafioFundamentos.Models
             string placa = Console.ReadLine();
 
             // Verifica se o veículo existe
-            if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
+            if (VeiculoEstaEstacionado(placa, veiculos))
             {
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
                 int horas = Convert.ToInt32(Console.ReadLine());
@@ -63,6 +67,11 @@ namespace DesafioFundamentos.Models
             {
                 Console.WriteLine("Não há veículos estacionados.");
             }
+        }
+
+        private bool VeiculoEstaEstacionado(string placa, List<string> veiculos)
+        {
+            return veiculos.Any(x => x.ToUpper() == placa.ToUpper());
         }
     }
 }
