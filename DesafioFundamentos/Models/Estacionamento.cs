@@ -16,6 +16,15 @@ namespace DesafioFundamentos.Models
         {
             // Implementado!!!!!
             Console.WriteLine("Digite a placa do veículo para estacionar:");
+            string veiculo = Console.ReadLine();
+            if (veiculo.Length > 0)
+            {
+                veiculos.Add(veiculo);
+            }
+            else
+            {
+                Console.WriteLine("A placa não pode ser vazia!");
+            }
         }
 
         public void RemoverVeiculo()
