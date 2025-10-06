@@ -2,7 +2,7 @@ namespace DesafioProjetoHospedagem.Models
 {
     public class Reserva
     {
-        public List<Pessoa> Hospedes { get; set; }
+        public List<Pessoa> Hospedes { get; set; } = new List<Pessoa>();
         public Suite Suite { get; set; }
         public int DiasReservados { get; set; }
 
@@ -13,12 +13,12 @@ namespace DesafioProjetoHospedagem.Models
             DiasReservados = diasReservados;
         }
 
-        public void CadastrarHospedes(Pessoa hospede)
+        public void CadastrarHospedes(List<Pessoa> hospedes)
         {
             
-            if (Hospedes.Count < Suite.Capacidade)
+            if (Hospedes.Count <= Suite.Capacidade)
             {
-                Hospedes.Add(hospede);
+                Hospedes = hospedes;
             }
             else
             {
