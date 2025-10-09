@@ -1,7 +1,19 @@
-﻿using DesafioPOO.Models;
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-Nokia nokiaLumia = new("1234", "Nokia Lumia", "554422", 128);
-Iphone iphone11 = new("5647", "Iphone 11", "885544", 128);
+app.MapGet("/", () => "Hello World!");
+app.MapPost("/login", (LoginDTO loginDTO) =>
+{
+    if (loginDTO.Email == "adm@teste.comm" && loginDTO.Senha == "123456")
+        return Results.Ok("Login com sucesso");
+    else
+        return Results.Unauthorized();
+});
 
-nokiaLumia.InstalarAplicativo("Whatsapp");
-iphone11.InstalarAplicativo("Waze");
+app.Run();
+
+public class LoginDTO
+{
+    public string Email { get; set; } = default!;
+    public string Senha { get; set; } = default!;
+}

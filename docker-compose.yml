@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: veiculos123  # Substitua por uma senha forte
+      MYSQL_DATABASE: veiculosdb
+    ports:
+      - "3307:3306"  # Mapeia a porta 3307 da sua máquina para a 3306 do contêiner
+    volumes:
+      - my-db-volume:/var/lib/mysql # Persistência dos dados do banco
+
+volumes:
+  my-db-volume: # Define o volume que será usado pelo contêiner

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\trilha-net-fundamentos-desafio.props" />
+</Project>
