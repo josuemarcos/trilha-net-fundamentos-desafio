@@ -4,12 +4,14 @@ services:
   db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: veiculos123  # Substitua por uma senha forte
-      MYSQL_DATABASE: veiculosdb
+      MYSQL_ROOT_PASSWORD: veiculos123        # Senha do root
+      MYSQL_DATABASE: veiculosdb              # Banco que será criado automaticamente
+      MYSQL_USER: veiculos_user               # Usuário da aplicação
+      MYSQL_PASSWORD: veiculos_pass           # Senha do usuário
     ports:
-      - "3307:3306"  # Mapeia a porta 3307 da sua máquina para a 3306 do contêiner
+      - "3307:3306"                           # Porta local 3307 -> porta 3306 do container
     volumes:
-      - my-db-volume:/var/lib/mysql # Persistência dos dados do banco
+      - my-db-volume:/var/lib/mysql           # Persistência dos dados
 
 volumes:
-  my-db-volume: # Define o volume que será usado pelo contêiner
+  my-db-volume:

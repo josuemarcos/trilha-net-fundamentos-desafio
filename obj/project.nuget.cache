@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CTMF+QtDnWOxSuHmSmRp/L+FlWCCSvh0VzaEjdu+D6Rm1DhDY3Lj5sEae0h6bYW25Dqe3Wk0M5jfSI7+SHmmgw==",
+  "dgSpecHash": "+yvI6/16uX1o56hsCGzSkN/crTy8W4nKrS/nKdDuq7+9s1viojmittUCYIU/nskzsyfLjZIgSUqq+KoKj1vyaA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\trilha-net-fundamentos-desafio.csproj",
+  "projectFilePath": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\minimal-api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\josue\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\josue\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

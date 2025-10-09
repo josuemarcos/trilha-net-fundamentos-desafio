@@ -2159,9 +2159,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\trilha-net-fundamentos-desafio.csproj",
-      "projectName": "trilha-net-fundamentos-desafio",
-      "projectPath": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\trilha-net-fundamentos-desafio.csproj",
+      "projectUniqueName": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\minimal-api.csproj",
+      "projectName": "minimal-api",
+      "projectPath": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\minimal-api.csproj",
       "packagesPath": "C:\\Users\\josue\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\josue\\Documents\\Programação\\Curso C#\\trilha-net-fundamentos-desafio\\obj\\",
       "projectStyle": "PackageReference",
