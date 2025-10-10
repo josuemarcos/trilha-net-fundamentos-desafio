@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\trilha-net-fundamentos-desafio.props" />
-</Project>
