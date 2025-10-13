@@ -7,7 +7,7 @@ using MinimalApi.Dominio.Interfaces;
 using MinimalApi.Dominio.Servicos;
 using MinimalApi.Infraestrutura.Db;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<iAdministradorServico, AdministradorServico>();
+builder.Services.AddScoped<iAdministradorServico, VeiculoServico>();
 builder.Services.AddDbContext<DbContexto>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("mysql"),
