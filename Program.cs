@@ -1,7 +1,10 @@
 
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MinimalApi.Dominio.DTOs;
 using MinimalApi.Dominio.Entidades;
 using MinimalApi.Dominio.Enums;
@@ -9,18 +12,39 @@ using MinimalApi.Dominio.Interfaces;
 using MinimalApi.Dominio.ModelViews;
 using MinimalApi.Dominio.Servicos;
 using MinimalApi.Infraestrutura.Db;
+#region Builder
 var builder = WebApplication.CreateBuilder(args);
+
+var key = builder.Configuration.GetSection("Jwt").ToString();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(option =>
+{
+    option.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+    };
+});
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddScoped<iAdministradorServico, AdministradorServico>();
 builder.Services.AddScoped<iVeiculoServico, VeiculoServico>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<DbContexto>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("mysql"),
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("mysql")));
 });
 var app = builder.Build();
-
+#endregion
 
 #region Home
 app.MapGet("/", () => Results.Json(new Home())).WithTags("Home");
@@ -149,8 +173,7 @@ app.MapDelete("veiculos/{id}", ([FromRoute] int id, iVeiculoServico veiculoServi
 
 #endregion
 
-app.UseSwagger();
-app.UseSwaggerUI();
+
 
 ErrosDeValidacao ValidaVeiculo(VeiculoDTO veiculoDTO)
 {
@@ -177,6 +200,12 @@ ErrosDeValidacao ValidaAdministrador(SalvarAdministradorDTO administradorDTO)
 
     return validacao;
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 
