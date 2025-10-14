@@ -17,6 +17,11 @@ namespace MinimalApi.Dominio.Servicos
             _dbContexto = dbContexto;
         }
 
+        public Administrador? BuscaPorId(int id)
+        {
+           return _dbContexto.Administradores.Find(id);
+        }
+
         public void Incluir(Administrador administrador)
         {
             _dbContexto.Administradores.Add(administrador);

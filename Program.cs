@@ -57,6 +57,13 @@ app.MapGet("administradores", ([FromQuery] int? pagina, iAdministradorServico ad
     var administradores = administradorServico.Todos(pagina);
     return Results.Ok(administradores);
 }).WithTags("Administrador");
+
+app.MapGet("administradores/{id}", ([FromRoute] int id, iAdministradorServico administradorServico) =>
+{
+    var administrador = administradorServico.BuscaPorId(id);
+    if (administrador == null) return Results.NotFound();
+    return Results.Ok(administrador);
+}).WithTags("Administrador");
 #endregion
 
 #region Veiculos
