@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MinimalApi.Dominio.DTOs;
 using MinimalApi.Dominio.Entidades;
+using MinimalApi.Dominio.Enums;
 using MinimalApi.Dominio.Interfaces;
 using MinimalApi.Dominio.ModelViews;
 using MinimalApi.Dominio.Servicos;
@@ -34,7 +35,7 @@ app.MapPost("administradores/login", ([FromBody] LoginDTO loginDTO, iAdministrad
         return Results.Unauthorized();
 }).WithTags("Administrador");
 
-app.MapPost("administradores", ([FromBody] AdministradorDTO administradorDTO, iAdministradorServico administradorServico) =>
+app.MapPost("administradores", ([FromBody] SalvarAdministradorDTO administradorDTO, iAdministradorServico administradorServico) =>
 {
     var validacao = ValidaAdministrador(administradorDTO);
     if (validacao.Mensagens.Count > 0)
@@ -54,15 +55,33 @@ app.MapPost("administradores", ([FromBody] AdministradorDTO administradorDTO, iA
 
 app.MapGet("administradores", ([FromQuery] int? pagina, iAdministradorServico administradorServico) =>
 {
-    var administradores = administradorServico.Todos(pagina);
-    return Results.Ok(administradores);
+    var administradoresEntidade = administradorServico.Todos(pagina);
+    var administradoresDTO = new List<BuscarAdministradorDTO>();
+
+    foreach(var administrador in administradoresEntidade)
+    {
+        administradoresDTO.Add(new BuscarAdministradorDTO
+        {
+            Email = administrador.Email,
+            Perfil = (Perfil)Enum.Parse(typeof(Perfil), administrador.Perfil)
+        });
+    }
+
+
+
+    return Results.Ok(administradoresDTO);
 }).WithTags("Administrador");
 
 app.MapGet("administradores/{id}", ([FromRoute] int id, iAdministradorServico administradorServico) =>
 {
     var administrador = administradorServico.BuscaPorId(id);
     if (administrador == null) return Results.NotFound();
-    return Results.Ok(administrador);
+    var administradorDTO = new BuscarAdministradorDTO
+    {
+        Email = administrador.Email,
+        Perfil = (Perfil)Enum.Parse(typeof(Perfil), administrador.Perfil)
+    };
+    return Results.Ok(administradorDTO);
 }).WithTags("Administrador");
 #endregion
 
@@ -70,7 +89,7 @@ app.MapGet("administradores/{id}", ([FromRoute] int id, iAdministradorServico ad
 app.MapPost("veiculos/login", ([FromBody] VeiculoDTO veiculoDTO, iVeiculoServico veiculoServico) =>
 {
     var validacao = ValidaVeiculo(veiculoDTO);
-    if(validacao.Mensagens.Count > 0)
+    if (validacao.Mensagens.Count > 0)
     {
         return Results.UnprocessableEntity(validacao);
     }
@@ -111,7 +130,7 @@ app.MapPut("veiculos/{id}", ([FromRoute] int id,
     {
         return Results.UnprocessableEntity(validacao);
     }
-    
+
     veiculo.Ano = veiculoDTO.Ano;
     veiculo.Marca = veiculoDTO.Marca;
     veiculo.Nome = veiculoDTO.Nome;
@@ -146,7 +165,7 @@ ErrosDeValidacao ValidaVeiculo(VeiculoDTO veiculoDTO)
     return validacao;
 }
 
-ErrosDeValidacao ValidaAdministrador(AdministradorDTO administradorDTO)
+ErrosDeValidacao ValidaAdministrador(SalvarAdministradorDTO administradorDTO)
 {
     var validacao = new ErrosDeValidacao
     {

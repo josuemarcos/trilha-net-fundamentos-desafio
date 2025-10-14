@@ -6,7 +6,7 @@ using MinimalApi.Dominio.Enums;
 
 namespace MinimalApi.Dominio.DTOs
 {
-    public record AdministradorDTO
+    public record SalvarAdministradorDTO
     {
         public string? Email { get; set; }
         public string? Senha { get; set; }
