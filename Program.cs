@@ -38,6 +38,11 @@ app.MapPost("administradores/login", ([FromBody] LoginDTO loginDTO, iAdministrad
 #region Veiculos
 app.MapPost("veiculos/login", ([FromBody] VeiculoDTO veiculoDTO, iVeiculoServico veiculoServico) =>
 {
+    var validacao = ValidaDTO(veiculoDTO);
+    if(validacao.Mensagens.Count > 0)
+    {
+        return Results.UnprocessableEntity(validacao);
+    }
 
     var veiculo = new Veiculo
     {
@@ -70,6 +75,12 @@ app.MapPut("veiculos/{id}", ([FromRoute] int id,
 {
     var veiculo = veiculoServico.BuscaPorId(id);
     if (veiculo == null) return Results.NotFound();
+    var validacao = ValidaDTO(veiculoDTO);
+    if (validacao.Mensagens.Count > 0)
+    {
+        return Results.UnprocessableEntity(validacao);
+    }
+    
     veiculo.Ano = veiculoDTO.Ano;
     veiculo.Marca = veiculoDTO.Marca;
     veiculo.Nome = veiculoDTO.Nome;
@@ -90,6 +101,19 @@ app.MapDelete("veiculos/{id}", ([FromRoute] int id, iVeiculoServico veiculoServi
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+ErrosDeValidacao ValidaDTO(VeiculoDTO veiculoDTO)
+{
+    var validacao = new ErrosDeValidacao
+    {
+        Mensagens = []
+    };
+    if (string.IsNullOrEmpty(veiculoDTO.Marca)) validacao.Mensagens.Add("A marca não pode ficar em branco");
+    if (string.IsNullOrEmpty(veiculoDTO.Nome)) validacao.Mensagens.Add("O nome não pode ficar em branco");
+    if (veiculoDTO.Ano <= 1950) validacao.Mensagens.Add("O ano não pode ser inferior a 1950");
+
+    return validacao;
+}
 
 app.Run();
 

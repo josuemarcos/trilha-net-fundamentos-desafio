@@ -52,13 +52,14 @@ namespace MinimalApi.Dominio.Servicos
                 query = query.Where(veiculo => veiculo.Marca.ToLower().Contains(marca));
             }
 
-            if(pagina != null)
+            if (pagina != null)
             {
-            int itensPorPagina = 10;
-            query = query.Skip(((int)pagina - 1) * itensPorPagina).Take(itensPorPagina);
-            }    
+                int itensPorPagina = 10;
+                query = query.Skip(((int)pagina - 1) * itensPorPagina).Take(itensPorPagina);
+            }
 
             return query.ToList();
         }
+        
     }
 }
