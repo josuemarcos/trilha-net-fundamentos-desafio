@@ -31,7 +31,17 @@ namespace MinimalApi.Dominio.Servicos
             return administrador;
         }
 
+        public List<Administrador> Todos(int? pagina = 1)
+        {
+            var query = _dbContexto.Administradores.AsQueryable();
 
+            if (pagina != null)
+            {
+                int itensPorPagina = 10;
+                query = query.Skip(((int)pagina - 1) * itensPorPagina).Take(itensPorPagina);
+            }
 
+            return query.ToList();
+        }
     }
 }

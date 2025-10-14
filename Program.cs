@@ -36,22 +36,33 @@ app.MapPost("administradores/login", ([FromBody] LoginDTO loginDTO, iAdministrad
 
 app.MapPost("administradores", ([FromBody] AdministradorDTO administradorDTO, iAdministradorServico administradorServico) =>
 {
+    var validacao = ValidaAdministrador(administradorDTO);
+    if (validacao.Mensagens.Count > 0)
+    {
+        return Results.UnprocessableEntity(validacao);
+    }
     Administrador administrador = new Administrador
     {
         Email = administradorDTO.Email,
-        Perfil = administradorDTO.Perfil,
+        Perfil = administradorDTO.Perfil.ToString(),
         Senha = administradorDTO.Senha
     };
 
     administradorServico.Incluir(administrador);
     return Results.Created($"/administradores/{administrador.Id}", administrador);
 }).WithTags("Administrador");
+
+app.MapGet("administradores", ([FromQuery] int? pagina, iAdministradorServico administradorServico) =>
+{
+    var administradores = administradorServico.Todos(pagina);
+    return Results.Ok(administradores);
+}).WithTags("Administrador");
 #endregion
 
 #region Veiculos
 app.MapPost("veiculos/login", ([FromBody] VeiculoDTO veiculoDTO, iVeiculoServico veiculoServico) =>
 {
-    var validacao = ValidaDTO(veiculoDTO);
+    var validacao = ValidaVeiculo(veiculoDTO);
     if(validacao.Mensagens.Count > 0)
     {
         return Results.UnprocessableEntity(validacao);
@@ -88,7 +99,7 @@ app.MapPut("veiculos/{id}", ([FromRoute] int id,
 {
     var veiculo = veiculoServico.BuscaPorId(id);
     if (veiculo == null) return Results.NotFound();
-    var validacao = ValidaDTO(veiculoDTO);
+    var validacao = ValidaVeiculo(veiculoDTO);
     if (validacao.Mensagens.Count > 0)
     {
         return Results.UnprocessableEntity(validacao);
@@ -115,7 +126,7 @@ app.MapDelete("veiculos/{id}", ([FromRoute] int id, iVeiculoServico veiculoServi
 app.UseSwagger();
 app.UseSwaggerUI();
 
-ErrosDeValidacao ValidaDTO(VeiculoDTO veiculoDTO)
+ErrosDeValidacao ValidaVeiculo(VeiculoDTO veiculoDTO)
 {
     var validacao = new ErrosDeValidacao
     {
@@ -124,6 +135,19 @@ ErrosDeValidacao ValidaDTO(VeiculoDTO veiculoDTO)
     if (string.IsNullOrEmpty(veiculoDTO.Marca)) validacao.Mensagens.Add("A marca não pode ficar em branco");
     if (string.IsNullOrEmpty(veiculoDTO.Nome)) validacao.Mensagens.Add("O nome não pode ficar em branco");
     if (veiculoDTO.Ano <= 1950) validacao.Mensagens.Add("O ano não pode ser inferior a 1950");
+
+    return validacao;
+}
+
+ErrosDeValidacao ValidaAdministrador(AdministradorDTO administradorDTO)
+{
+    var validacao = new ErrosDeValidacao
+    {
+        Mensagens = []
+    };
+    if (string.IsNullOrEmpty(administradorDTO.Email)) validacao.Mensagens.Add("O email não pode ficar em branco");
+    if (string.IsNullOrEmpty(administradorDTO.Senha)) validacao.Mensagens.Add("A senha não pode ficar em branco");
+    if (administradorDTO.Perfil == null) validacao.Mensagens.Add("O ano não pode ser inferior a 1950");
 
     return validacao;
 }
