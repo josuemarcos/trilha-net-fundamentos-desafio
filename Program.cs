@@ -33,6 +33,19 @@ app.MapPost("administradores/login", ([FromBody] LoginDTO loginDTO, iAdministrad
     else
         return Results.Unauthorized();
 }).WithTags("Administrador");
+
+app.MapPost("administradores", ([FromBody] AdministradorDTO administradorDTO, iAdministradorServico administradorServico) =>
+{
+    Administrador administrador = new Administrador
+    {
+        Email = administradorDTO.Email,
+        Perfil = administradorDTO.Perfil,
+        Senha = administradorDTO.Senha
+    };
+
+    administradorServico.Incluir(administrador);
+    return Results.Created($"/administradores/{administrador.Id}", administrador);
+}).WithTags("Administrador");
 #endregion
 
 #region Veiculos

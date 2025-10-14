@@ -7,8 +7,8 @@ namespace MinimalApi.Dominio.DTOs
 {
     public record VeiculoDTO
     {
-        public String? Nome { get; set; }
-        public String? Marca { get; set; }
+        public string? Nome { get; set; }
+        public string? Marca { get; set; }
         public int Ano { get; set; }
     }
 }

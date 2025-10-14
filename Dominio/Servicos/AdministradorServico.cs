@@ -16,6 +16,13 @@ namespace MinimalApi.Dominio.Servicos
         {
             _dbContexto = dbContexto;
         }
+
+        public void Incluir(Administrador administrador)
+        {
+            _dbContexto.Administradores.Add(administrador);
+            _dbContexto.SaveChanges();
+        }
+
         public Administrador? Login(LoginDTO loginDTO)
         {
             var administrador = _dbContexto.Administradores.Where(
@@ -23,5 +30,8 @@ namespace MinimalApi.Dominio.Servicos
             ).FirstOrDefault();
             return administrador;
         }
+
+
+
     }
 }
