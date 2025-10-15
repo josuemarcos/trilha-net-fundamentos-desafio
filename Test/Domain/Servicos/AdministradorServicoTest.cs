@@ -28,6 +28,30 @@ public class AdministradorServicoTest
         //Arrange
         var contexto = CriarContextoDeTestes();
         contexto.Database.ExecuteSqlRaw("TRUNCATE TABLE Administradores");
+
+        var adm = new Administrador
+        {
+            Email = "teste@teste.com",
+            Senha = "teste",
+            Perfil = "adm"
+        };
+
+        var administradorServico = new AdministradorServico(contexto);
+        //Act
+        administradorServico.Incluir(adm);
+
+
+        //Assert
+        Assert.AreEqual(1, administradorServico.Todos(1).Count);
+
+    }
+    
+    [TestMethod]
+    public void TestarBuscaPorId()
+    {
+        //Arrange
+        var contexto = CriarContextoDeTestes();
+        contexto.Database.ExecuteSqlRaw("TRUNCATE TABLE Administradores");
         
         var adm = new Administrador();
         adm.Email = "teste@teste.com";
@@ -37,10 +61,11 @@ public class AdministradorServicoTest
         var administradorServico = new AdministradorServico(contexto);
         //Act
         administradorServico.Incluir(adm);
+        var admBusca = administradorServico.BuscaPorId(adm.Id);
 
 
         //Assert
-        Assert.AreEqual(1, administradorServico.Todos(1).Count);
+        Assert.AreEqual(1, adm.Id);
 
     }
 }
