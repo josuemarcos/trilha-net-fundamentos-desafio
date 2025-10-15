@@ -3,7 +3,7 @@ using MinimalApi.Dominio.Entidades;
 namespace Test;
 
 [TestClass]
-public class UnitTest1
+public class AdministradorTest
 {
     [TestMethod]
     public void TestarGetSetPropriedades()
